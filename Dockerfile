@@ -74,6 +74,7 @@ RUN mkdir -p /home/ubuntu/.config/ngrok && echo "version: \"2\"" > /root/.config
 COPY main.py /public/main.py
 COPY wine.sh /wine.sh
 COPY index.html /public/templates/index.html
+COPY 404.html /public/templates/404.html
 COPY manga_detail.html /public/templates/manga_detail.html
 COPY read_chapter.html /public/templates/read_chapter.html
 
