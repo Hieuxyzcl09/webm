@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .dark {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300 flex flex-col min-h-screen">
+    <nav class="bg-white dark:bg-gray-800 shadow-md">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="/" class="text-xl font-bold text-gray-800 dark:text-white">Truyện Tranh</a>
+            <button id="darkModeToggle" class="focus:outline-none">
+                <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-6 py-8 flex flex-col items-center justify-center">
+        <h1 class="text-6xl font-bold mb-4 text-gray-800 dark:text-white">404</h1>
+        <p class="text-2xl mb-8 text-gray-600 dark:text-gray-400">Oops! Page not found.</p>
+        <a href="/" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">Go back home</a>
+    </main>
+
+    <footer class="bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-6 py-4">
+            <p class="text-center text-gray-600 dark:text-gray-400">&copy; 2024 Truyện Tranh Hieuxyz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+
+        function toggleDarkMode() {
+            html.classList.toggle('dark');
+            localStorage.setItem('darkMode', html.classList.contains('dark'));
+        }
+
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            html.classList.add('dark');
+        }
+    </script>
+</body>
+</html>

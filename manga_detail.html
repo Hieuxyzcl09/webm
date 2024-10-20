@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Truyện Tranh Hieuxyz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f4f4f4;
+            --text-color: #333;
+            --card-background: #fff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .manga-detail {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .manga-cover {
+            flex: 0 0 300px;
+        }
+
+        .manga-cover img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .manga-info {
+            flex: 1;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .manga-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .manga-meta-item {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .manga-description {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .read-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .read-button:hover {
+            background-color: #2980b9;
+        }
+
+        .chapters-list {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .chapters-list h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .chapter-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chapter-item:last-child {
+            border-bottom: none;
+        }
+
+        .chapter-link {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .chapter-link:hover {
+            color: var(--primary-color);
+        }
+
+        .chapter-date {
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            --background-color: #1a1a1a;
+            --text-color: #f4f4f4;
+            --card-background: #2c2c2c;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .manga-detail {
+                flex-direction: column;
+            }
+
+            .manga-cover {
+                flex: 0 0 auto;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="manga-detail">
+            <div class="manga-cover">
+                <img src="{{ url_for('serve_image', filepath=folder + '/' + title + '/' + preview_image) }}" alt="{{ title }} Cover">
+            </div>
+            <div class="manga-info">
+                <h1>{{ title }}</h1>
+                <div class="manga-meta">
+                    <span class="manga-meta-item"><i class="fas fa-user"></i> {{ info.get('author', 'Unknown') }}</span>
+                    <span class="manga-meta-item"><i class="fas fa-star"></i> {{ info.get('rating', 'N/A') }}/5</span>
+                    <span class="manga-meta-item"><i class="fas fa-book-open"></i> {{ info.get('status', 'Unknown') }}</span>
+                    <span class="manga-meta-item"><i class="fas fa-clock"></i> {{ info.get('last_updated', 'Unknown') }}</span>
+                </div>
+                <p class="manga-description">{{ info.get('description', 'No description available.') }}</p>
+                <a href="{{ url_for('read_chapter', folder=folder, title=title, chapter=chapters[0]['folder']) }}" class="read-button">Start Reading</a>
+            </div>
+        </div>
+
+        <div class="chapters-list">
+            <h2>Chapters</h2>
+            {% for chapter in chapters %}
+            <div class="chapter-item">
+                <a href="{{ url_for('read_chapter', folder=folder, title=title, chapter=chapter['folder']) }}" class="chapter-link">{{ chapter['title'] }}</a>
+                <span class="chapter-date">{{ info.get('last_updated', 'Unknown') }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+
+    <footer class="mt-12 text-center text-gray-600">
+        <p>© 2024 Truyện Tranh Hieuxyz. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        function toggleTheme() {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        // Save theme preference
+        themeToggle.addEventListener('click', () => {
+            localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+    </script>
+</body>
+</html>

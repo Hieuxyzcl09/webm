@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truyện Tranh Hieuxyz - {{ mode.capitalize() }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f0f3f5;
+            --text-color: #333;
+            --card-background: #fff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --card-background: #2c2c2c;
+            --card-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .search-button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #27ae60;
+        }
+
+        .manga-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .manga-card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .manga-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .manga-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .manga-info {
+            padding: 1rem;
+        }
+
+        .manga-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .manga-author {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .manga-genres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .genre-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .manga-status {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .manga-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .star-rating {
+            color: #f1c40f;
+        }
+
+        .manga-updated {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .manga-chapters {
+            margin-top: 1rem;
+        }
+
+        .chapter-link {
+            display: block;
+            padding: 0.5rem;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .chapter-link:hover {
+            background-color: #e0e0e0;
+        }
+
+        .view-details {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-details:hover {
+            background-color: #27ae60;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .page-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .page-link:hover {
+            background-color: #2980b9;
+        }
+
+        .page-link.active {
+            background-color: var(--secondary-color);
+        }
+
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #2980b9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .manga-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .manga-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="logo">Truyện Tranh Hieuxyz</h1>
+            <nav>
+                <a href="?mode=manga" class="nav-link">Truyện Tranh</a>
+                <a href="?mode=hentai" class="nav-link">Hentai</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto mt-8">
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm...">
+            <button id="search-button" class="search-button">Tìm kiếm</button>
+        </div>
+
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <label for="sort-select" class="mr-2">Sắp xếp theo:</label>
+                <select id="sort-select" class="p-2 border rounded">
+                    <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Tên</option>
+                    <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Đánh giá</option>
+                    <option value="last_updated" {% if sort_by == 'last_updated' %}selected{% endif %}>Ngày cập nhật</option>
+                </select>
+            </div>
+            <div>
+                <label for="genre-select" class="mr-2">Thể loại:</label>
+                <select id="genre-select" class="p-2 border rounded">
+                    <option value="">Tất cả thể loại</option>
+                    {% for genre in all_genres %}
+                    <option value="{{ genre }}" {% if filter_genre == genre %}selected{% endif %}>{{ genre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="manga-grid">
+            {% for manga in manga_list %}
+            <div class="manga-card">
+                <img src="{{ manga.preview }}" alt="{{ manga.title }}" class="manga-image">
+                <div class="manga-info">
+                    <h2 class="manga-title">{{ manga.title }}</h2>
+                    <p class="manga-author">Tác giả: {{ manga.author }}</p>
+                    <div class="manga-genres">
+                        {% for genre in manga.genres[:3] %}
+                        <span class="genre-tag">{{ genre }}</span>
+                        {% endfor %}
+                    </div>
+                    <p class="manga-status">Trạng thái: {{ manga.status }}</p>
+                    <div class="manga-rating">
+                        <span class="star-rating">
+                            {% for _ in range(manga.rating|int) %}
+                            <i class="fas fa-star"></i>
+                            {% endfor %}
+                            {% if manga.rating % 1 != 0 %}
+                            <i class="fas fa-star-half-alt"></i>
+                            {% endif %}
+                        </span>
+                        <span>{{ manga.rating }}/5</span>
+                    </div>
+                    <p class="manga-updated">Cập nhật: {{ manga.last_updated }}</p>
+                    <div class="manga-chapters">
+                        <h3 class="text-lg font-semibold mb-2">Chương mới nhất:</h3>
+                        {% for chapter in get_chapters(manga.title, mode)[-3:]|reverse %}
+                        <a href="{{ url_for('read_chapter', folder=mode, title=manga.title, chapter=chapter.folder) }}" class="chapter-link">
+                            {{ chapter.title }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                    <a href="{{ url_for('manga_detail', folder=mode, title=manga.title) }}" class="view-details mt-4">Xem chi tiết</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="pagination mt-8">
+            {% if page > 1 %}
+            <a href="?page={{ page - 1 }}&mode={{ mode }}&search={{ search_query }}&sort={{ sort_by }}&genre={{ filter_genre }}" class="page-link">Previous</a>
+            {% endif %}
+            
+            {% for i in range(max(1, page - 2), min(total_pages + 1, page + 3)) %}
+                {% if i == page %}
+                <span class="page-link active">{{ i }}</span>
+                {% else %}
+                <a href="?page={{ i }}&mode={{ mode }}&search={{ search_query }}&sort={{ sort_by }}&genre={{ filter_genre }}" class="page-link">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page < total_pages %}
+            <a href="?page={{ page + 1 }}&mode={{ mode }}&search={{ search_query }}&sort={{ sort_by }}&genre={{ filter_genre }}" class="page-link">Next</a>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Truyện Tranh Hieuxyz. All rights reserved.</p>
+    </footer>
+
+    <button id="dark-mode-toggle" class="dark-mode-toggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <script>
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const body = document.body;
+
+        function toggleDarkMode() {
+            body.classList.toggle('dark-mode');
+            const isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+
+        // Check for saved dark mode preference
+        const savedDarkMode = localStorage.getItem('darkMode');
+        if (savedDarkMode === 'true') {
+            body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                window.location.href = `?search=${encodeURIComponent(query)}&mode={{ mode }}&sort={{ sort_by }}&genre={{ filter_genre }}`;
+            }
+        }
+
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Sort and filter functionality
+        const sortSelect = document.getElementById('sort-select');
+        const genreSelect = document.getElementById('genre-select');
+
+        function updateSortAndFilter() {
+            const sort = sortSelect.value;
+            const genre = genreSelect.value;
+            window.location.href = `?mode={{ mode }}&search={{ search_query }}&sort=${sort}&genre=${genre}`;
+        }
+
+        sortSelect.addEventListener('change', updateSortAndFilter);
+        genreSelect.addEventListener('change', updateSortAndFilter);
+    </script>
+</body>
+</html>
